@@ -1,0 +1,25 @@
+declare
+fun {PowSimple N M}
+   if M==0 then 1
+   else
+      N*{PowSimple N (M-1)}
+   end
+end
+
+
+fun {Pow N M}
+   if M==0 then
+      if N==0 then
+	 ~1
+	 else 1
+	 end
+   else
+	 if M>0 then
+	    N*{Pow N (M-1)}
+	 else
+	    (1/N)*{Pow N (M+1)}
+	 end
+	 
+   end
+end
+{Browse {PowSimple 2 5}}

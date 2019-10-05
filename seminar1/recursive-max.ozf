@@ -1,0 +1,11 @@
+declare
+fun {MaxRec N M}
+   if M==0 then N
+   else
+      if N==0 then M
+	 else
+	 1 + {MaxRec (N-1) (M-1)}
+      end
+   end
+end
+{Browse {MaxRec 10 12}}
