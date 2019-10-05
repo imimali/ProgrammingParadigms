@@ -1,0 +1,12 @@
+declare
+fun {Abs X}
+   try
+      if X>0.0 then X else ~X
+      end
+   catch E then
+      if X>0 then X else ~X
+      end
+   end
+end
+
+{Browse {Abs 50.0}}
