@@ -1,0 +1,37 @@
+declare
+fun {CumulativeProd L U}
+   if L==U then
+      if L==0 then 1
+      else
+	 L
+      end
+      
+   else U*{CumulativeProd L U-1}
+   end
+end
+
+fun {Fact N}
+   {CumulativeProd 0 N}
+end
+
+fun {Comb N K}
+   {Fact N} div ({Fact K}*{Fact N-K})
+end
+
+fun {CombModifiedA N K}
+   if K==0 then 1
+   else
+      {CumulativeProd N-K+1 N} div {Fact K}
+   end
+end
+
+fun {CombModifiedB N K}
+   if K==0.0 then 1.0
+   else
+      (N/K)*{CombModifiedB N-1.0 K-1.0}
+   end
+end
+{Browse {CombModifiedA 10 0}}
+
+
+
