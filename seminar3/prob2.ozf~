@@ -1,0 +1,16 @@
+declare
+fun {TakeHelper Xs N R}
+   if N>0 then
+      case Xs of
+	 H|T then {TakeHelper T N-1 {Append R [H]}}
+      end
+   else R
+   end
+end
+
+fun {Take Xs N}
+   {TakeHelper Xs N nil}
+end
+
+{Browse {Take [0 1 2 3 4 5] 3}}
+
