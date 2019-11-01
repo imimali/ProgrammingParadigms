@@ -1,0 +1,13 @@
+declare
+fun {Zip Xs Ys}
+   case Xs of
+      nil then nil
+   [] Hx|Tx then
+      case Ys of
+	 nil then nil
+      [] Hy|Ty then
+	 {Append [Hx#Hy] {Zip Tx Ty}}
+      end
+   end
+end
+{Browse {Zip [1 2 3] [4 5 6]}}

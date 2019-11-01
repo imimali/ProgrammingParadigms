@@ -1,0 +1,21 @@
+declare
+fun {Zip Xs Ys}
+   case Xs of
+      nil then nil
+   [] Hx|Tx then
+      case Ys of
+	 nil then nil
+      [] Hy|Ty then
+	 {Append [Hx#Hy] {Zip Tx Ty}}
+      end
+   end
+end
+
+fun {Unzip Xs}
+   case Xs of
+      nil then nil
+   [] H|T then
+      Z={Unzip T}
+      
+
+{Browse {Zip [1 2 3] [4 5 6]}}
