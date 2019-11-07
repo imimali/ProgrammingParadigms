@@ -1,0 +1,17 @@
+declare
+fun {PositionHelper Xs Y P}
+   case Xs of
+      nil then nil
+   [] H|T then
+      if H==Y then P
+      else {PositionHelper T Y P+1}
+      end
+   end
+end
+fun {Position Xs Y}
+   {PositionHelper Xs Y 1}
+end
+
+{Browse {Position [10 20 30] 20}}
+      
+   
