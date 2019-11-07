@@ -11,6 +11,22 @@ fun {Zip Xs Ys}
    end
 end
 
-{Browse {Zip [1 2 3] [4 5 6]}}
-P=1#2
-{Browse P.1}
+declare
+fun {UnzipHelper Zs Xs Ys}
+   case Zs of
+      nil then Xs#Ys
+   [] Hz|Tz then
+      {UnzipHelper Tz {Append Xs [Hz.1]} {Append Ys [Hz.2]}}
+   end
+end
+
+declare
+fun {Unzip Zs}
+   {UnzipHelper Zs nil nil}
+end
+
+
+
+      
+
+{Browse {Unzip [1#4 2#5 3#6]}}
