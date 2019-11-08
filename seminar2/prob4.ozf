@@ -1,0 +1,55 @@
+declare
+% generic, not for bst
+fun {Smallest Tree}
+   if {And Tree.2 \= nil Tree.3 \=nil } then
+      {Min {Min {Smallest Tree.2} {Smallest Tree.3}} Tree.1}
+   else
+      if Tree.2 \= nil then
+	 {Min Tree.1 {Smallest Tree.2}}
+      else
+	 
+	 if Tree.3 \= nil then
+	    {Min Tree.1 {Smallest Tree.3}}
+	 else Tree.1
+	 end
+      end
+   end
+end
+
+fun {Biggest Tree}
+   if {And Tree.2 \= nil Tree.3 \=nil } then
+      {Max {Max {Biggest Tree.2} {Biggest Tree.3}} Tree.1}
+   else
+      if Tree.2 \= nil then
+	 {Max Tree.1 {Biggest Tree.2}}
+      else
+	 
+	 if Tree.3 \= nil then
+	    {Max Tree.1 {Biggest Tree.3}}
+	 else Tree.1
+	 end
+      end
+   end
+end
+
+% for bst
+fun {LeftMost Tree}
+   case Tree.2 of
+      nil then Tree.1
+   [] Left then {LeftMost Left}
+   end
+end
+
+fun {RightMost Tree}
+   case Tree.3 of
+      nil then Tree.1
+      [] Right then {RightMost Right}
+   end
+end
+
+      
+
+
+
+T = node(3 node(1 nil nil) node(5 nil nil))
+{Browse {LeftMost T}}
