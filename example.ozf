@@ -1,0 +1,17 @@
+local X in
+   X=10
+   {Browse X}
+   local X in
+      X=100
+      {Browse X}
+   end
+end
+
+local P Q in
+   proc {Q X} {Browse stat(X)} end
+   proc {P X} {Q X} end
+   local Q in
+      proc {Q X} {Browse dyn(X)} end
+      {P hello}
+   end
+end

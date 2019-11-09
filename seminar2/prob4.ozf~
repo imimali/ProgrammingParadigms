@@ -47,28 +47,9 @@ fun {RightMost Tree}
    end
 end
 
-
-fun {IsSorted Tree}
-   if Tree == nil then true
-   else
-      if Tree.2 \= nil then
-	 if {RightMost Tree.2} > Tree.1 then false
-	 else
-	    Tree.3 \= nil then
-	    if {LeftMost Tree.3} < Tree.1 then false
-	 else
-	       {And {IsSorted Tree.2} {IsSOrted Tree.3}}
-	    end
-	 end
-      end
-   end
-end
+      
 
 
-   
-
-
-{Browse {IsSorted node(3 node(2 nil nil) node(5 nil nil))}}
 
 T = node(3 node(1 nil nil) node(5 nil nil))
 {Browse {LeftMost T}}

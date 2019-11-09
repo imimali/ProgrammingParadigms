@@ -1,0 +1,45 @@
+declare
+fun {LeftMost Tree}
+   case Tree.2 of
+      nil then Tree.1
+   [] Left then {LeftMost Left}
+   end
+end
+
+fun {RightMost Tree}
+   case Tree.3 of
+      nil then Tree.1
+      [] Right then {RightMost Right}
+   end
+end
+
+fun {Insert Tree Elem}
+   case Tree of
+      nil then node(Elem nil nil)
+   [] node(Val Left Right) then
+      if Val> Elem then
+	 node(Val {Insert Left Elem} Right)
+      else
+	 node(Val Left {Insert Right Elem})
+      end
+   end
+end
+
+
+
+fun {IsSorted Tree}
+   case Tree of
+      node(Val nil nil) then true
+   []node(Val Left nil) then {And {RightMost Left} < Val {IsSorted Left}}
+   []node(Val nil Right) then {And {LeftMost Right} > Val {IsSorted Right}}
+   []node(Val Left Right) then{And
+			       {And
+				{And {LeftMost Right} >Val {RightMost Left} < Val}
+			         {IsSorted Left}}
+			          {IsSorted Right}}
+   end
+end
+
+T=node(5 node(3 nil nil) node(7 nil nil))
+{Browse {Insert T 4}}
+{Browse {IsSorted T}}
