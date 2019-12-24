@@ -1,0 +1,128 @@
+declare
+fun {Without L E R}
+   case L
+   of nil then R
+   [] H|T then
+      if H==E then{Without T E R}
+      else {Without T E H|R}
+      end
+   end
+end
+
+fun {FreeSet E}
+   case E of
+     nil then nil
+   [] apply(E1 E2) then {Append {FreeSet E1 } {FreeSet E2 }}
+   [] lam(Id E1) then {Without {FreeSet E1} Id nil}
+   [] let(Id#E1 E2) then {Append{Without {FreeSet E1} Id nil} {Without {FreeSet E2} Id nil}}
+   else if {IsAtom E} then [atom(E).1] else nil end
+   end
+end
+
+fun {IsMember Env Id}
+   case Env of
+      nil then false
+     []  Id1#Exp|T then if Id1==Id then true
+			 else {IsMember T Id}
+			 end	
+   end
+end
+
+fun {Fetch Env Id}
+   case Env of
+      nil then Id
+   [] Id1#Exp|T then if Id1==Id then Exp
+		     else {Fetch T Id}
+		     end
+   end
+end
+
+fun {Adjoin Env Pair}
+   case Env of
+      nil then Pair
+   [] Id#Exp|T then if Id == Pair.1
+		    then Pair|T
+		    else Id#Exp|{Adjoin T Pair}
+		    end
+   end
+end
+
+fun {Replace Term A B}
+   {Browse [Term A B]}
+   case Term of
+      nil then nil
+   [] apply(E1 E2) then apply({Replace E1 A B} {Replace E2 A B})
+   [] let(Id#E1 E2) then if Id==A then
+			    let(B#{Replace E1 A B} {Replace E2 A B})
+			 else
+			    let(Id#{Replace E1 A B} {Replace E2 A B})
+			 end
+   [] lam(Id E1) then if Id==A then
+			 lam(B {Replace E1 A B})
+		      else
+			 lab(Id {Replace E1 A B})
+		      end
+   else if Term==A then B else Term end
+   end   
+end
+
+Cnt={NewCell 0}
+fun {NewId}
+   Cnt:=@Cnt+1
+   {String.toAtom {Append "id<"{Append {Int.toString @Cnt} ">"}}}
+end
+fun {Rename Term}
+   case Term of
+      nil then nil
+   [] apply(E1 E2) then apply(E1 E2)
+   [] let(Id#E1 E2) then
+      local N in
+      N={NewId}
+	 let(N#{Replace E1 Id N} {Replace E2 Id N})
+      end
+      
+   [] lam(Id E1) then
+      local N in
+      N={NewId}
+	 lam(N {Replace E1 Id N})
+      end
+   end
+end
+
+fun {SubsInner Id#Exp1 Exp2}
+   case Exp2 of
+      nil then nil
+   [] apply(E1 E2) then apply({SubsInner Id#Exp1 E1} {SubsInner Id#Exp1 E2})
+   [] let(Id1#E1 E2) then if Id1==Id then
+			     let(Id1#{SubsInner Id#Exp1 E1} {SubsInner Id#Exp1 E2})
+			  else
+			     let(Id1#{SubsInner Id#Exp1 E1} {SubsInner Id#Exp1 E2})
+			  end
+   [] lam(Id1 E1) then if Id1==Id then
+			  lam(Id1 E1)
+		       else
+			  lam(Id1 {SubsInner Id#Exp1 E1})
+		       end
+   else if {IsAtom Exp2} then
+	   if Exp2==Id then
+	      Exp1
+	   else
+	      Exp2
+	   end
+	else
+	   Exp2
+	end
+   end
+end
+fun {Subs Id#Exp1 Exp2}
+   {SubsInner Id#Exp1 {Rename Exp2}}
+end
+
+
+%{Browse {NewId}}
+%{Browse {FreeSet apply(y apply(let(x#x x) y))}}
+%{Browse {IsMember [a#b c#d] b}}
+%{Browse {Fetch [a#b c#d] c}}
+%{Browse {Adjoin [a#b c#d] c#2}}
+{Browse {Rename let(x#apply(y x) z)}}
+{Browse {Subs x#lam(x x) apply(x y)}}
