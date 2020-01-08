@@ -19,4 +19,4 @@ Stuff I do for the Programming Paradigms course
 - Arithmetic Expression Evaluation
 
 ## Seminar 4
-
+- lambda calculus
